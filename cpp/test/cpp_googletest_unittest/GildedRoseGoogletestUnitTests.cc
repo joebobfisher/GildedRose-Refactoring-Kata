@@ -54,6 +54,13 @@ TEST_F(GildedRoseTests, UpdateQualityDoesNotUpdateAbove50) {
     EXPECT_EQ(50, target->items[0].quality);
 }
 
+TEST_F(GildedRoseTests, UpdateQualityIncreasesAgedBrieQualityWhereSellInLessThan0) {
+    target->items[0].name = "Aged Brie";
+    target->items[0].sellIn = -1;
+    target->updateQuality();
+    EXPECT_EQ(2, target->items[0].quality);
+}
+
 TEST_F(GildedRoseTests, UpdateQualitySulfurasDoesNotDegrade) {
     target->items[0].name = "Sulfuras, Hand of Ragnaros";
     target->items[0].quality = 80;
@@ -84,7 +91,7 @@ TEST_F(GildedRoseTests, UpdateQualityIncreasesBackstagePassQualityBy3WhenSellInL
     EXPECT_EQ(4, target->items[0].quality);
 }
 
-TEST_F(GildedRoseTests, UpdateQualityVoidsBackstagePassQualityWhenSellInLessThan0) {
+TEST_F(GildedRoseTests, UpdateQualityVoidsBackstagePassQualityWhenSellInLE0) {
     target->items[0].name = "Backstage passes to a TAFKAL80ETC concert";
     target->items[0].sellIn = 0;
     target->updateQuality();
